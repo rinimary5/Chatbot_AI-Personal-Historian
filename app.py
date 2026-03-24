@@ -1,11 +1,9 @@
 import streamlit as st
-import google.generativeai as genai
+from google import genai
 import os
 
-# Configure Gemini API
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-
-model = genai.GenerativeModel("gemini-3.1-flash-lite-preview")
+# Initialize Gemini client
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 st.title("AI Personal Historian")
 st.write("Ask me anything about History!")
@@ -29,16 +27,18 @@ if prompt:
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # prompt
+    # System prompt
     system_prompt = f"""
 You are an AI Personal Historian.
 Your job is to explain historical events, people, and civilizations clearly and concisely.
+
 Rules:
-• Give short answers (3–5 sentences).
-• Focus on important facts: date, location, key people, and impact.
-• Use simple language.
-• Avoid unnecessary storytelling.
-Always format the answer EXACTLY like this with line breaks:
+- Give short answers (3–5 sentences).
+- Focus on important facts: date, location, key people, and impact.
+- Use simple language.
+- Avoid unnecessary storytelling.
+
+Always format the answer EXACTLY like this:
 
 Event:
 <event name>
@@ -54,12 +54,22 @@ What Happened:
 
 Historical Impact:
 <impact of the event>
+
 Question: {prompt}
 """
 
-    response = model.generate_content(system_prompt)
+    try:
+        response = client.models.generate_content(
+            model="gemini-1.5-flash",
+            contents=system_prompt
+        )
+        answer = response.text
 
-    answer = response.text
+        if not answer:
+            answer = "⚠️ No response generated. Try again."
+
+    except Exception as e:
+        answer = f"❌ Error: {e}"
 
     # Show bot response
     with st.chat_message("assistant"):
