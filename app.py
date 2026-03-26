@@ -9,11 +9,6 @@ client = genai.Client(
     api_key=st.secrets["GEMINI_API_KEY"],
     http_options=types.HttpOptions(api_version='v1')
 )
-st.sidebar.subheader("Current API 'Menu'")
-for m in client.models.list():
-    # This filters for models that work with your current code
-    if 'generateContent' in m.supported_methods:
-        st.sidebar.write(f"✅ {m.name}")
 
 st.title("AI Personal Historian")
 st.write("Ask me anything about History!")
