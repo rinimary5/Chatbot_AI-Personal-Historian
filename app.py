@@ -65,7 +65,7 @@ Question: {prompt}
 
     try:
         response = client.models.generate_content(
-            model="gemini-flash-latest",
+            model="gemini-3-flash-preview",
             contents=system_prompt
         )
         answer = response.text
