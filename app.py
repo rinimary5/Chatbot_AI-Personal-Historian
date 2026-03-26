@@ -3,7 +3,13 @@ from google import genai
 import os
 
 # Initialize Gemini client
-client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
+from google.genai import types # Add this import at the top
+
+# Initialize Gemini client with explicit API version
+client = genai.Client(
+    api_key=st.secrets["GEMINI_API_KEY"],
+    http_options=types.HttpOptions(api_version='v1')
+)
 
 st.title("AI Personal Historian")
 st.write("Ask me anything about History!")
@@ -60,7 +66,7 @@ Question: {prompt}
 
     try:
         response = client.models.generate_content(
-            model="gemini-1.5-flash",
+            model="models/gemini-1.5-flash",
             contents=system_prompt
         )
         answer = response.text
