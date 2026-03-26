@@ -4,7 +4,11 @@ import os
 
 # Initialize Gemini client
 from google.genai import types # Add this import at the top
-
+st.sidebar.subheader("Current API 'Menu'")
+for m in client.models.list():
+    # This filters for models that work with your current code
+    if 'generateContent' in m.supported_methods:
+        st.sidebar.write(f"✅ {m.name}")
 # Initialize Gemini client with explicit API version
 client = genai.Client(
     api_key=st.secrets["GEMINI_API_KEY"],
@@ -66,7 +70,7 @@ Question: {prompt}
 
     try:
         response = client.models.generate_content(
-            model="models/gemini-3-flash-preview",
+            model="gemini-flash-latest",
             contents=system_prompt
         )
         answer = response.text
