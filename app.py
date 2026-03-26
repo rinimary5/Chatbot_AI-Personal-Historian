@@ -7,7 +7,7 @@ from google.genai import types # Add this import at the top
 # Initialize Gemini client with explicit API version
 client = genai.Client(
     api_key=st.secrets["GEMINI_API_KEY"],
-    http_options=types.HttpOptions(api_version='v1')
+    http_options=types.HttpOptions(api_version='v1beta')
 )
 
 st.title("AI Personal Historian")
