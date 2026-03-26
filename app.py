@@ -3,7 +3,7 @@ from google import genai
 import os
 
 # Initialize Gemini client
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
 
 st.title("AI Personal Historian")
 st.write("Ask me anything about History!")
